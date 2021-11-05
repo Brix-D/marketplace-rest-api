@@ -16,7 +16,7 @@
     "psr-4": {
       "Controllers\\": "app/controllers/",
       "Models\\": "app/models/",
-      "Services\\": "app/Services"
+      "Services\\": "app/Services/"
     }
   }
 }

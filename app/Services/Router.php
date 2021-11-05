@@ -27,30 +27,36 @@ class Router
 //        return explode('/', $uri);
 //    }
 
-    public static function page(string $uri, string $controllerName) {
+    public static function page(string $uri, callable $controllerAction) {
         self::$routesList[] = [
             'uri' => $uri,
-            'controller' => $controllerName,
+            'controller' => $controllerAction,
         ];
     }
 
     public static function use(string $namespace, array $routes) {
-
+        foreach ($routes as $route) {
+            self::page($namespace . $route['uri'], $route['controller']);
+        }
     }
 
     public static function navigate(string $uri) {
         $routeFound = false;
         foreach (self::$routesList as $route) {
             if ($route['uri'] === '/' . $uri) {
-                try {
-                    $controller = new $route['controller']();
-                    if (method_exists($controller, 'action')) {
-                        $controller->action();
-                    } else {
-                        die('controller has not such method');
-                    }
-                } catch (\Error $error) {
-                    die('class is not exist ' . $error->getMessage());
+//                try {
+//                    $controller = new $route['controller']();
+//                    if (method_exists($controller, 'action')) {
+//                        $controller->action();
+//                    } else {
+//                        die('controller has not such method');
+//                    }
+//                } catch (\Error $error) {
+//                    die('class is not exist ' . $error->getMessage());
+//                }
+                $controller = $route['controller'];
+                if (is_callable($controller)) {
+                    $controller();
                 }
                 $routeFound = true;
                 break;
