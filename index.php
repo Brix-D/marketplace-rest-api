@@ -1,7 +1,6 @@
 <?php
-require_once "vendor/autoload.php";
-//phpinfo();
+use Services\Router;
+require_once __DIR__ . "/vendor/autoload.php";
+require_once __DIR__ . "/app/routes.php";
 
-
-# var_dump($_SERVER['REQUEST_URI']);
-var_dump($_GET);
+Router::action();
