@@ -6,7 +6,7 @@ namespace Services;
 
 class Router
 {
-    private static $routesList = [];
+    private static array $routesList = [];
 
     private function __construct() {}
 
@@ -63,10 +63,7 @@ class Router
             }
         }
         if (!$routeFound) {
-            header('Content-Type: application/json');
-            //header('HTTP/1.0 404 Not Found');
-            http_response_code(404);
-            echo json_encode(['status' => 404, 'message' => 'Page not found']);
+            new Response(404, message: 'Page not found');
         }
     }
 }
