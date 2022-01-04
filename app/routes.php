@@ -5,5 +5,5 @@ use Controllers\Index;
 
 require_once "controllers/api/Auth/routes.php";
 
-Router::page('/', fn() => Index::action());
-Router::use('/api/auth', $routes);
+Router::use('/auth', $routes);
+//Router::page('/', fn() => Index::action());

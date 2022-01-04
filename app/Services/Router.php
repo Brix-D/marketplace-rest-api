@@ -3,19 +3,24 @@
 
 namespace Services;
 
+use Controllers\Index;
 
 class Router
 {
     private static array $routesList = [];
 
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
-    public static function action() {
+    public static function action()
+    {
         $uri = self::getRequestUri();
         self::navigate($uri);
     }
 
-    private static function getRequestUri() {
+    private static function getRequestUri()
+    {
         if (isset($_GET['route'])) {
             $request = $_GET['route'];
         } else {
@@ -27,23 +32,33 @@ class Router
 //        return explode('/', $uri);
 //    }
 
-    public static function page(string $uri, callable $controllerAction) {
+    public static function page(string $uri, callable $controllerAction)
+    {
         self::$routesList[] = [
             'uri' => $uri,
             'controller' => $controllerAction,
         ];
     }
 
-    public static function use(string $namespace, array $routes) {
+    public static function use(string $namespace, array $routes)
+    {
         foreach ($routes as $route) {
             self::page($namespace . $route['uri'], $route['controller']);
         }
     }
 
-    public static function navigate(string $uri) {
-        $routeFound = false;
-        foreach (self::$routesList as $route) {
-            if ($route['uri'] === '/' . $uri) {
+    public static function isApiUri(string $uri): bool
+    {
+        return str_starts_with($uri, API_PATH);
+    }
+
+    public static function navigate(string $uri)
+    {
+        //dd($uri);
+        if (self::isApiUri($uri)) {
+            $routeFound = false;
+            foreach (self::$routesList as $route) {
+                if (API_PATH . $route['uri'] === '/' . $uri) {
 //                try {
 //                    $controller = new $route['controller']();
 //                    if (method_exists($controller, 'action')) {
@@ -54,16 +69,24 @@ class Router
 //                } catch (\Error $error) {
 //                    die('class is not exist ' . $error->getMessage());
 //                }
-                $controller = $route['controller'];
-                if (is_callable($controller)) {
-                    $controller();
+                    $controller = $route['controller'];
+                    if (is_callable($controller)) {
+                        $controller();
+                    }
+                    $routeFound = true;
+                    break;
                 }
-                $routeFound = true;
-                break;
             }
+            if (!$routeFound) {
+                new Response(404, message: 'Page not found');
+            }
+        } else {
+            self::indexFallback();
         }
-        if (!$routeFound) {
-            new Response(404, message: 'Page not found');
-        }
+    }
+
+    public static function indexFallback()
+    {
+        Index::action();
     }
 }
