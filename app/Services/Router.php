@@ -47,18 +47,11 @@ class Router
         }
     }
 
-    public static function isApiUri(string $uri): bool
-    {
-        return str_starts_with($uri, API_PATH);
-    }
-
     public static function navigate(string $uri)
     {
-        //dd($uri);
-        if (self::isApiUri($uri)) {
             $routeFound = false;
             foreach (self::$routesList as $route) {
-                if (API_PATH . $route['uri'] === '/' . $uri) {
+                if ($route['uri'] === '/' . $uri) {
 //                try {
 //                    $controller = new $route['controller']();
 //                    if (method_exists($controller, 'action')) {
@@ -80,13 +73,6 @@ class Router
             if (!$routeFound) {
                 new Response(404, message: 'Page not found');
             }
-        } else {
-            self::indexFallback();
-        }
     }
 
-    public static function indexFallback()
-    {
-        Index::action();
-    }
 }
