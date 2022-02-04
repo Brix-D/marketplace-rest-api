@@ -32,9 +32,10 @@ class Router
 //        return explode('/', $uri);
 //    }
 
-    public static function page(string $uri, callable $controllerAction)
+    public static function page(string $method, string $uri, callable $controllerAction)
     {
         self::$routesList[] = [
+            'method' => $method,
             'uri' => $uri,
             'controller' => $controllerAction,
         ];
@@ -43,7 +44,7 @@ class Router
     public static function use(string $namespace, array $routes)
     {
         foreach ($routes as $route) {
-            self::page($namespace . $route['uri'], $route['controller']);
+            self::page($route['method'], $namespace . $route['uri'], $route['controller']);
         }
     }
 
@@ -63,11 +64,15 @@ class Router
 //                    die('class is not exist ' . $error->getMessage());
 //                }
                     $controller = $route['controller'];
+                    $requestMethod = $route['method'];
                     if (is_callable($controller)) {
-                        $controller();
+                        if ($requestMethod === $_SERVER['REQUEST_METHOD']) {
+                            $controller();
+                            $routeFound = true;
+                            break;
+                        }
                     }
-                    $routeFound = true;
-                    break;
+
                 }
             }
             if (!$routeFound) {

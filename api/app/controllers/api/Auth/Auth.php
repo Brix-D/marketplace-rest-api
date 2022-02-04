@@ -29,13 +29,14 @@ class Auth
                     $login = $_POST['login'];
                     $email = $_POST['email'];
                     $password = $_POST['password'];
-                    $user = self::createUser($login, $email, $password);
-                    echo 'you are signed up';
-                    dump($user);
-                    break;
+                    $user = self::createUser($login, $email, $password)->toArray();
+                    //echo 'you are signed up';
+                    //dump($user);
+                    new Response(data: $user);
                 } catch (\PDOException $error) {
                     new Response(500, message: 'user already exists' . $error->getMessage());
                 }
+                break;
             }
             default: {
                 new Response(404, message: 'Page not found');
