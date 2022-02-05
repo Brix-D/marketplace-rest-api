@@ -4,21 +4,20 @@
 namespace Services\responses;
 
 
-class Success extends Response
+class Success implements Response
 {
-    private mixed $data;
-    public function __construct(int $code = 200, mixed $data = [])
+    private function __construct()
+    {
+
+    }
+
+    public static function json(int $code = 200, mixed $data = []): void
     {
         if ($code < 200 || $code >= 300) {
             exit();
         }
-        parent::__construct($code);
-        $this->data = $data;
-    }
-
-    public function json(): void
-    {
-        parent::json();
-        echo json_encode($this->data);
+        header('Content-Type: application/json');
+        http_response_code($code);
+        echo json_encode($data);
     }
 }

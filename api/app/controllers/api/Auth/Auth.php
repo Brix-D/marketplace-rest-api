@@ -18,18 +18,16 @@ class Auth
 
     public static function showUsers(): void {
         $users = User::all()->toArray();
-        $response = new Success(200, $users);
-        $response->json();
+        Success::json(data: $users);
     }
 
     public static function findUser($vars) {
         try {
             $user = User::findOrFail($vars['id'])->toArray();
-            $response = new Success(data: $user);
+            Success::json(data: $user);
         } catch (\Exception $e) {
-            $response = new Error(404, $e,'Пользователь не найден');
+            Error::json(404, message: 'Пользователь не найден');
         }
-        $response->json();
     }
 
     public static function register() {
@@ -40,11 +38,10 @@ class Auth
             $password = $_POST['password'];
             $user = User::create(["login"=> $login, "email" => $email, "password" => $password])->toArray();
             //dump($user);
-            $response = new Success(data: $user);
+            Success::json(data: $user);
         } catch (\PDOException $error) {
-            $response = new Error(500, $error, message: 'user already exists');
+            Error::json(422, message: 'Пользователь уже существует');
         }
-        $response->json();
     }
 
 }

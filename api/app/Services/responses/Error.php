@@ -4,26 +4,22 @@
 namespace Services\responses;
 
 
-class Error extends Response
+class Error implements Response
 {
-    private string $message;
-    private \Exception|null $error;
-    public function __construct(int $code, \Exception $error = null, string $message = '')
+    private function __construct()
     {
-        parent::__construct($code);
-        $this->message = $message;
-        $this->error = $error;
     }
 
-    public function json(): void
+    public static function json(int $code, \Exception $error = null, string $message = ''): void
     {
-        parent::json();
-        $response = ['code' => $this->code];
-        if (!empty($this->message)) {
-            $response['message'] = $this->message;
+        header('Content-Type: application/json');
+        http_response_code($code);
+        $response = ['code' => $code];
+        if (!empty($message)) {
+            $response['message'] = $message;
         }
-        if (!is_null($this->error)) {
-            $response['error'] = $this->error->getTrace();
+        if (!is_null($error)) {
+            $response['error'] = $error->getTrace();
         }
         echo json_encode($response);
     }
