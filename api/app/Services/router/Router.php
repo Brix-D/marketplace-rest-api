@@ -1,10 +1,11 @@
 <?php
 
-namespace Services;
+namespace Services\router;
 
 use FastRoute;
 use FastRoute\RouteCollector;
 use FastRoute\Dispatcher;
+use Services\responses\Error;
 
 class Router
 {
@@ -41,11 +42,11 @@ class Router
         $route = self::$dispatcher->dispatch($httpMethod, $uri);
         switch ($route[0]) {
             case Dispatcher::NOT_FOUND:
-                new Response(404, message: 'Page not found');
+                new Error(404, message: 'Страница не найдена');
                 break;
             case Dispatcher::METHOD_NOT_ALLOWED:
-                $allowedMethods = $route[1];
-                new Response(code: 405,  data: $allowedMethods, message: 'Method Not Allowed',);
+                // $allowedMethods = $route[1];
+                new Error(code: 405, message: 'Метод не доступен');
                 break;
             case Dispatcher::FOUND:
                 $handler = $route[1];
