@@ -47,23 +47,4 @@ class Auth
         $response->json();
     }
 
-//    public static function createUser(string $login, string $email, string $password) : array {
-//        return User::create(["login"=> $login, "email" => $email, "password" => $password])->toArray();
-//    }
-
-//    public static function getUsers() : array {
-//        return User::all()->toArray();
-//    }
-
-//    /**
-//     * @throws \Exception
-//     */
-//    public static function getUser($id): array {
-//        try {
-//            $user = User::findOrFail($id);
-//            return $user->toArray();
-//        } catch (\Exception $e) {
-//            throw $e;
-//        }
-//    }
 }
