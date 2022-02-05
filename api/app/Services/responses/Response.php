@@ -11,7 +11,7 @@ class Response
         $this->code = $code;
     }
 
-    public function json(): void {
+    protected function json(): void {
         header('Content-Type: application/json');
         http_response_code($this->code);
     }

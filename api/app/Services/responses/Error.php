@@ -23,7 +23,7 @@ class Error extends Response
             $response['message'] = $this->message;
         }
         if (!is_null($this->error)) {
-            $response['error'] = $this->error->getTraceAsString();
+            $response['error'] = $this->error->getTrace();
         }
         echo json_encode($response);
     }

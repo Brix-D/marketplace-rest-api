@@ -42,11 +42,13 @@ class Router
         $route = self::$dispatcher->dispatch($httpMethod, $uri);
         switch ($route[0]) {
             case Dispatcher::NOT_FOUND:
-                new Error(404, message: 'Страница не найдена');
-                break;
+               $response = new Error(404, message: 'Страница не найдена');
+               $response->json();
+               break;
             case Dispatcher::METHOD_NOT_ALLOWED:
                 // $allowedMethods = $route[1];
-                new Error(code: 405, message: 'Метод не доступен');
+                $response = new Error(code: 405, message: 'Метод не доступен');
+                $response->json();
                 break;
             case Dispatcher::FOUND:
                 $handler = $route[1];

@@ -18,32 +18,33 @@ class Auth
 
     public static function showUsers(): void {
         $users = User::all()->toArray();
-        new Success(200, $users);
+        $response = new Success(200, $users);
+        $response->json();
     }
 
     public static function findUser($vars) {
         try {
             $user = User::findOrFail($vars['id'])->toArray();
-            new Success(data: $user);
+            $response = new Success(data: $user);
         } catch (\Exception $e) {
-            new Error(404, $e,'Пользователь не найден');
+            $response = new Error(404, $e,'Пользователь не найден');
         }
+        $response->json();
     }
 
     public static function register() {
-        //dump($_SERVER['REQUEST_METHOD']);
         try {
             //dump($_POST);
             $login = $_POST['login'];
             $email = $_POST['email'];
             $password = $_POST['password'];
             $user = User::create(["login"=> $login, "email" => $email, "password" => $password])->toArray();
-            //echo 'you are signed up';
             //dump($user);
-            new Success(data: $user);
+            $response = new Success(data: $user);
         } catch (\PDOException $error) {
-            new Error(500, $error, message: 'user already exists');
+            $response = new Error(500, $error, message: 'user already exists');
         }
+        $response->json();
     }
 
 //    public static function createUser(string $login, string $email, string $password) : array {
