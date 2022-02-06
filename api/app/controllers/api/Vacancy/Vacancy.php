@@ -1,11 +1,11 @@
 <?php
 
-namespace Controllers\Api\Vacancy;
+namespace Controllers\Api\VacancyController;
 use Models\Vacancy;
 use Services\responses\Success;
 use Services\responses\Error;
 
-class Vacancy
+class VacancyController
 {
     public static function show():void
     {
