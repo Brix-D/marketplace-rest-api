@@ -21,6 +21,6 @@ class Error implements Response
         if (!is_null($error)) {
             $response['error'] = $error->getTrace();
         }
-        echo json_encode($response);
+        echo json_encode($response, JSON_UNESCAPED_UNICODE);
     }
 }

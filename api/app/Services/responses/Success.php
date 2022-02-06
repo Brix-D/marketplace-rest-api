@@ -18,6 +18,6 @@ class Success implements Response
         }
         header('Content-Type: application/json');
         http_response_code($code);
-        echo json_encode($data);
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 }
