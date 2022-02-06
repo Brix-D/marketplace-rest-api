@@ -1,6 +1,6 @@
 <?php
 
-namespace Controllers\Api\VacancyController;
+namespace Controllers\Api\Vacancy;
 use Models\Vacancy;
 use Services\responses\Success;
 use Services\responses\Error;
